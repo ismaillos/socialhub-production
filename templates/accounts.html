@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Accounts</title></head>
+<body>
+  <h1>Connected Accounts</h1>
+  <table border="1" cellpadding="8">
+    <tr><th>Platform</th><th>Account ID</th><th>Name</th><th>Expires</th></tr>
+    {% for t in tokens %}
+      <tr>
+        <td>{{ t.platform }}</td>
+        <td>{{ t.account_id }}</td>
+        <td>{{ t.account_name }}</td>
+        <td>{{ t.expires_at }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  <a href="/">← Home</a>
+</body>
+</html>
