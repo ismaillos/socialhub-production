@@ -1,72 +1,105 @@
-</html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🌐 SocialHub - Connect Your Accounts</title>
-<style>
-body {
-  font-family: Arial, sans-serif;
-  max-width: 600px;
-  margin: 40px auto;
-  text-align: center;
-  background: #f4f4f4;
-  color: #333;
-}
-h1 {
-  margin-bottom: 30px;
-}
-button {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  padding: 12px;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  cursor: pointer;
-  transition: 0.2s;
-}
-button:hover {
-  opacity: 0.9;
-}
-.fb { background: #1877f2; }
-.ig { background: #e1306c; }
-.li { background: #0a66c2; }
-.tw { background: #1da1f2; }
-.tt { background: #000000; color: white; }
-.yt { background: #ff0000; }
-.pt { background: #e60023; }
-.bs { background: #1b95e0; }
-
-footer {
-  margin-top: 40px;
-  font-size: 13px;
-  color: #888;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>SocialHub — Connect Your Accounts</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background: #fafafa;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      color: #222;
+      margin-bottom: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      width: 90%;
+      max-width: 800px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: scale(1.03);
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
 </head>
 <body>
-<h1>🔗 Connect Your Social Media Accounts</h1>
-<p>Authorize SocialHub to manage your connected accounts for automated publishing.</p>
 
-<button class="fb" onclick="window.location='/auth/facebook/login'">Connect Facebook</button>
-<button class="ig" onclick="window.location='/auth/instagram/login'">Connect Instagram</button>
-<button class="li" onclick="window.location='/auth/linkedin/login'">Connect LinkedIn</button>
-<button class="tw" onclick="window.location='/auth/twitter/login'">Connect Twitter (X)</button>
-<button class="tt" onclick="window.location='/auth/tiktok/login'">Connect TikTok</button>
-<button class="yt" onclick="window.location='/auth/youtube/login'">Connect YouTube</button>
-<button class="pt" onclick="window.location='/auth/pinterest/login'">Connect Pinterest</button>
-<button class="bs" onclick="window.location='/auth/bluesky/login'">Connect Bluesky</button>
+  <h1>Connect Your Social Accounts 🌐</h1>
 
-<footer>
-  <p>© 2025 SocialHub | Connected with n8n Automation</p>
-</footer>
- <ul>
-    <li><a href="/accounts">View Connected Accounts</a></li>
-    <li><a href="/logs">View Post Logs</a></li>
-  </ul>
+  <div class="grid">
+    <div class="card">
+      <h3>Facebook</h3>
+      <button onclick="connect('facebook')">Connect</button>
+    </div>
+    <div class="card">
+      <h3>Instagram</h3>
+      <button onclick="connect('instagram')">Connect</button>
+    </div>
+    <div class="card">
+      <h3>LinkedIn</h3>
+      <button onclick="connect('linkedin')">Connect</button>
+    </div>
+    <div class="card">
+      <h3>Twitter (X)</h3>
+      <button onclick="connect('twitter')">Connect</button>
+    </div>
+    <div class="card">
+      <h3>YouTube</h3>
+      <button onclick="connect('youtube')">Connect</button>
+    </div>
+    <div class="card">
+      <h3>Pinterest</h3>
+      <button onclick="connect('pinterest')">Connect</button>
+    </div>
+    <div class="card">
+      <h3>Threads</h3>
+      <button onclick="connect('threads')">Connect</button>
+    </div>
+    <div class="card">
+      <h3>Bluesky</h3>
+      <button onclick="connect('bluesky')">Connect</button>
+    </div>
+    <div class="card">
+      <h3>TikTok</h3>
+      <button onclick="connect('tiktok')">Connect</button>
+    </div>
+  </div>
+
+  <script>
+    function connect(platform) {
+      window.location.href = `/auth/${platform}/login`;
+    }
+  </script>
+
 </body>
 </html>
