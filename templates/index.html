@@ -99,7 +99,25 @@
     function connect(platform) {
       window.location.href = `/auth/${platform}/login`;
     }
+  
   </script>
+  <script>
+async function checkStatus() {
+  const res = await fetch('/auth/status');
+  const data = await res.json();
+  for (const [platform, connected] of Object.entries(data)) {
+    const btn = document.querySelector(`button[onclick="connect('${platform}')"]`);
+    if (connected && btn) {
+      btn.style.background = '#28a745';
+      btn.innerText = 'Connected ✅';
+      btn.disabled = true;
+    }
+  }
+}
+checkStatus();
+</script>
+
+  
 
 </body>
 </html>

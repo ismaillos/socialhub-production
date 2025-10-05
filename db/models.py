@@ -5,11 +5,14 @@ import datetime
 class Token(Base):
     __tablename__ = "tokens"
     id = Column(Integer, primary_key=True, index=True)
-    platform = Column(String, unique=True, index=True)
+    platform = Column(String)
     account_id = Column(String)
+    username = Column(String)
+    profile_pic = Column(String)
+    business_id = Column(String, nullable=True)
     access_token = Column(String)
-    refresh_token = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
 
 class Post(Base):
     __tablename__ = "posts"
