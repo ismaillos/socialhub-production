@@ -1,5 +1,4 @@
-  
-    from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime
 from db.database import Base
 import datetime
 
@@ -12,12 +11,11 @@ class Token(Base):
     refresh_token = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
-
 class Post(Base):
     __tablename__ = "posts"
     id = Column(Integer, primary_key=True, index=True)
     platform = Column(String)
     account_id = Column(String)
-    message = Column(Text)
-    media_url = Column(Text, nullable=True)
+    message = Column(String)
+    media_url = Column(String, nullable=True)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)
