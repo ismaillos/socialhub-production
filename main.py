@@ -3,13 +3,19 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from db.database import Base, engine, SessionLocal
 from db.models import Token, Post
+
+# 👇 Add this import line near the top
 from auth import facebook, instagram, linkedin, twitter, tiktok, youtube, pinterest, bluesky
+
 import datetime
 
 app = FastAPI(title="SocialHub Production", version="1.0.0")
 Base.metadata.create_all(bind=engine)
 templates = Jinja2Templates(directory="templates")
 
+# ----------------------
+# 🔹 EXISTING ROUTES
+# ----------------------
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
@@ -47,8 +53,13 @@ async def publish(request: Request):
     session.commit()
     session.close()
     return JSONResponse({"status": "success", "platform": platform, "message": message})
-    
- app.include_router(facebook.router)
+
+# ----------------------
+# 🔹 ADD THESE AT THE END
+# ----------------------
+
+# Register each router from /auth/
+app.include_router(facebook.router)
 app.include_router(instagram.router)
 app.include_router(linkedin.router)
 app.include_router(twitter.router)
@@ -56,4 +67,3 @@ app.include_router(tiktok.router)
 app.include_router(youtube.router)
 app.include_router(pinterest.router)
 app.include_router(bluesky.router)
-
