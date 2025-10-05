@@ -13,12 +13,11 @@ class Token(Base):
     access_token = Column(String)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
-
 class Post(Base):
     __tablename__ = "posts"
     id = Column(Integer, primary_key=True, index=True)
     platform = Column(String)
     account_id = Column(String)
     message = Column(String)
-    media_url = Column(String, nullable=True)
+    media_url = Column(String)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)

@@ -1,8 +1,6 @@
 fastapi
-uvicorn[standard]
-gunicorn
+uvicorn
 jinja2
 sqlalchemy
-python-dotenv
 requests
-pydantic
+gunicorn
