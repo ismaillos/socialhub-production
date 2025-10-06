@@ -1,6 +1,6 @@
+import os, requests, datetime
 from fastapi import APIRouter
 from fastapi.responses import RedirectResponse, JSONResponse
-import os, urllib.parse, requests
 from db.database import SessionLocal
 from db.models import Token
 
@@ -8,53 +8,55 @@ router = APIRouter(prefix="/auth/facebook", tags=["Facebook"])
 
 CLIENT_ID = os.getenv("FACEBOOK_CLIENT_ID", "")
 CLIENT_SECRET = os.getenv("FACEBOOK_CLIENT_SECRET", "")
-REDIRECT_URI = os.getenv("FACEBOOK_REDIRECT_URI", "https://your-domain/auth/facebook/callback")
-
-AUTH_URL = "https://www.facebook.com/v19.0/dialog/oauth"
-TOKEN_URL = "https://graph.facebook.com/v19.0/oauth/access_token"
-SCOPE = "public_profile,pages_show_list,pages_manage_posts,instagram_basic,instagram_content_publish"
+REDIRECT_URI = os.getenv("FACEBOOK_REDIRECT_URI", "https://socialhub-production-production.up.railway.app/auth/facebook/callback")
+SCOPE = "pages_show_list,pages_read_engagement,pages_manage_posts,instagram_basic,instagram_content_publish,business_management"
 
 @router.get("/login")
 def fb_login():
-    params = {
-        "client_id": CLIENT_ID,
-        "redirect_uri": REDIRECT_URI,
-        "response_type": "code",
-        "scope": SCOPE,
-        "state": "fb_state_123",
-    }
-    return RedirectResponse(f"{AUTH_URL}?{urllib.parse.urlencode(params)}")
+    auth_url = (
+        "https://www.facebook.com/v19.0/dialog/oauth"
+        f"?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}"
+        f"&scope={SCOPE}&response_type=code"
+    )
+    return RedirectResponse(url=auth_url)
 
 @router.get("/callback")
-def fb_callback(code: str = None, error: str = None, state: str = None):
-    if error or not code:
-        return JSONResponse({"status":"error","platform":"facebook","message": error or "missing code"}, status_code=400)
+def fb_callback(code: str = None, error: str = None):
+    if error:
+        return JSONResponse({"status":"error","message":error}, status_code=400)
 
-    params = {
+    token_params = {
         "client_id": CLIENT_ID,
-        "client_secret": CLIENT_SECRET,
         "redirect_uri": REDIRECT_URI,
+        "client_secret": CLIENT_SECRET,
         "code": code
     }
-    token_res = requests.get(TOKEN_URL, params=params).json()
-    if "access_token" not in token_res:
-        return JSONResponse({"status":"error","platform":"facebook","details": token_res}, status_code=400)
+    token_res = requests.get("https://graph.facebook.com/v19.0/oauth/access_token", params=token_params).json()
+    access_token = token_res.get("access_token")
+    if not access_token:
+        return JSONResponse({"status":"error","details": token_res}, status_code=400)
 
-    access_token = token_res["access_token"]
+    # Get user
+    me = requests.get("https://graph.facebook.com/me", params={"access_token": access_token, "fields": "id,name"}).json()
 
-    # Optional: fetch user profile
-    me = requests.get("https://graph.facebook.com/me", params={"access_token": access_token}).json()
-    account_id = me.get("id", "unknown")
-    username = me.get("name", "Facebook User")
+    # Get Pages + pick first for demo (you can render selection UI later)
+    pages = requests.get("https://graph.facebook.com/me/accounts", params={"access_token": access_token}).json()
+    page_id = None
+    page_token = None
+    if "data" in pages and pages["data"]:
+        page_id = pages["data"][0]["id"]
+        page_token = pages["data"][0].get("access_token")
 
-    with SessionLocal() as s:
-        existing = s.query(Token).filter(Token.platform=="facebook").first()
-        if existing:
-            existing.account_id = account_id
-            existing.username = username
-            existing.access_token = access_token
-        else:
-            s.add(Token(platform="facebook", account_id=account_id, username=username, access_token=access_token))
-        s.commit()
+    with SessionLocal() as session:
+        existing = session.query(Token).filter(Token.platform=="facebook").first()
+        if not existing:
+            existing = Token(platform="facebook")
+        existing.account_id = me.get("id")
+        existing.username = me.get("name")
+        existing.access_token = access_token
+        existing.page_id = page_id
+        existing.page_access_token = page_token
+        session.add(existing)
+        session.commit()
 
-    return RedirectResponse(url="/accounts", status_code=302)
+    return RedirectResponse(url="/accounts")

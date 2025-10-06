@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8"/>
   <title>Connected Accounts</title>
   <style>
-    body { font-family: Arial; background: #fafafa; }
-    h1 { text-align: center; margin: 20px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px; }
-    .card { background: white; padding: 20px; text-align: center; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    button { background: #dc3545; color: white; border: none; padding: 8px 14px; border-radius: 5px; cursor: pointer; }
+    body { font-family: system-ui, Arial; background: #f6f7fb; margin: 0; }
+    header { padding: 18px 24px; background: #222; color: #fff; }
+    main { max-width: 960px; margin: 30px auto; padding: 0 16px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 16px; }
+    .card { background:#fff; border-radius:10px; padding:18px; box-shadow:0 4px 20px rgba(0,0,0,.06); text-align:center; }
+    .disconnect { background:#dc3545; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; margin-top:10px; }
   </style>
 </head>
 <body>
-  <h1>Connected Accounts</h1>
-  <div class="grid">
-    {% for token in tokens %}
-    <div class="card">
-      <h3>{{ token.platform | capitalize }}</h3>
-      <p>{{ token.username or token.account_id }}</p>
-      <form action="/disconnect/{{ token.platform }}" method="post">
-        <button type="submit">Disconnect</button>
-      </form>
+  <header><strong>SocialHub</strong></header>
+  <main>
+    <h1>Connected Accounts</h1>
+    <div class="grid">
+      {% for t in tokens %}
+        <div class="card">
+          <div><strong>{{ t.platform|capitalize }}</strong></div>
+          <div>{{ t.username or t.account_id }}</div>
+          {% if t.business_id %}<div>Business/Page ID: {{ t.business_id }}</div>{% endif %}
+          {% if t.page_id %}<div>Page ID: {{ t.page_id }}</div>{% endif %}
+          <form method="post" action="/disconnect/{{ t.platform }}">
+            <button class="disconnect" type="submit">Disconnect</button>
+          </form>
+        </div>
+      {% else %}
+        <p>No accounts connected yet.</p>
+      {% endfor %}
     </div>
-    {% else %}
-    <p style="text-align:center;">No connected accounts yet.</p>
-    {% endfor %}
-  </div>
-  <center><a href="/">← Back to Connect More</a></center>
+    <p><a href="/">← Back to dashboard</a></p>
+  </main>
 </body>
 </html>
