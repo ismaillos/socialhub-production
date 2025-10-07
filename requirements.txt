@@ -6,3 +6,4 @@ requests
 gunicorn
 python-dotenv
 python-multipart
+cryptography
