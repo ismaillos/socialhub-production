@@ -4,16 +4,18 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
 from db.database import Base, engine, SessionLocal
-from db.models import Token, Post
-from auth import facebook, instagram, tiktok, youtube
-
-API_KEY = os.getenv("API_KEY")
-
+from db import models as db_models  # ensure ALL models are loaded (Token, Post, AppSecret)
+# Create tables BEFORE importing auth (so /core/config queries won't crash)
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="SocialHub", version="1.0.1")
+from db.models import Token, Post, AppSecret
+
+app = FastAPI(title="SocialHub", version="1.0.2")
+
 app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_methods=['*'], allow_headers=['*'])
 templates = Jinja2Templates(directory='templates')
+
+API_KEY = os.getenv("API_KEY")
 
 def require_api_key(x_api_key: str = Header(None)):
     if not API_KEY or x_api_key != API_KEY:
@@ -76,7 +78,7 @@ async def publish(request: Request):
         token = session.query(Token).filter(Token.platform == platform).first()
         if not token:
             raise HTTPException(status_code=404, detail='No connected account found')
-        post = Post(platform=platform, account_id=token.account_id, message=message, media_url=media_url)
+        post = db_models.Post(platform=platform, account_id=token.account_id, message=message, media_url=media_url)
         session.add(post); session.commit()
     return JSONResponse({'status':'ok','platform':platform,'message':message})
 
@@ -84,7 +86,8 @@ async def publish(request: Request):
 def health():
     return {'status':'ok','uptime': datetime.datetime.utcnow().isoformat()}
 
-# Routers
+# Import auth routers AFTER tables exist
+from auth import facebook, instagram, tiktok, youtube
 app.include_router(facebook.router)
 app.include_router(instagram.router)
 app.include_router(tiktok.router)
