@@ -3,12 +3,9 @@ from sqlalchemy.exc import OperationalError
 from db.database import SessionLocal
 from db.models import AppSecret
 from util.secret_box import decrypt_value
-
 def get_secret(name: str, default: str | None = None) -> str | None:
-    # ENV has priority
     val = os.getenv(name)
     if val: return val
-    # DB fallback; tolerate first-boot when table doesn't exist
     try:
         with SessionLocal() as s:
             row = s.query(AppSecret).filter(AppSecret.key == name).first()

@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Text, UniqueConstraint
 from db.database import Base
 import datetime
+
 class Token(Base):
     __tablename__ = 'tokens'
     id = Column(Integer, primary_key=True, index=True)
@@ -16,6 +17,7 @@ class Token(Base):
     expires_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     __table_args__ = (UniqueConstraint('platform','account_id', name='uq_platform_account'),)
+
 class Post(Base):
     __tablename__ = 'posts'
     id = Column(Integer, primary_key=True, index=True)
@@ -24,6 +26,7 @@ class Post(Base):
     message = Column(Text)
     media_url = Column(String, nullable=True)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+
 class AppSecret(Base):
     __tablename__ = 'app_secrets'
     id = Column(Integer, primary_key=True, index=True)

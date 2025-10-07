@@ -3,22 +3,21 @@ from fastapi import FastAPI, Request, HTTPException, Header
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.templating import Jinja2Templates
+from apscheduler.schedulers.background import BackgroundScheduler
+
 from db.database import Base, engine, SessionLocal
-from db import models as db_models  # ensure ALL models are loaded (Token, Post, AppSecret)
-# Create tables BEFORE importing auth (so /core/config queries won't crash)
+from db import models as db_models
 Base.metadata.create_all(bind=engine)
+from db.models import Token, Post
+from core.config import get_secret
 
-from db.models import Token, Post, AppSecret
-
-app = FastAPI(title="SocialHub", version="1.0.2")
-
+app = FastAPI(title="SocialHub", version="1.2.0")
 app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_methods=['*'], allow_headers=['*'])
 templates = Jinja2Templates(directory='templates')
 
-API_KEY = os.getenv("API_KEY")
-
 def require_api_key(x_api_key: str = Header(None)):
-    if not API_KEY or x_api_key != API_KEY:
+    api_key = get_secret('API_KEY', os.getenv('API_KEY'))
+    if not api_key or x_api_key != api_key:
         raise HTTPException(status_code=401, detail='Unauthorized')
 
 @app.get('/', response_class=HTMLResponse)
@@ -55,9 +54,11 @@ def list_tokens(platform: str, x_api_key: str = Header(None)):
     require_api_key(x_api_key)
     with SessionLocal() as s:
         rows = s.query(Token).filter(Token.platform == platform).all()
-        return [{'platform': r.platform,'account_id': r.account_id,'username': r.username,'business_id': r.business_id,
-                 'page_id': r.page_id,'access_token': r.access_token,'page_access_token': r.page_access_token,
-                 'refresh_token': r.refresh_token} for r in rows]
+        return [{
+            'platform': r.platform,'account_id': r.account_id,'username': r.username,'business_id': r.business_id,
+            'page_id': r.page_id,'access_token': r.access_token,'page_access_token': r.page_access_token,
+            'refresh_token': r.refresh_token, 'expires_at': r.expires_at.isoformat() if r.expires_at else None
+        } for r in rows]
 
 @app.get('/token/{platform}/{account_id}')
 def get_token(platform: str, account_id: str, x_api_key: str = Header(None)):
@@ -66,9 +67,11 @@ def get_token(platform: str, account_id: str, x_api_key: str = Header(None)):
         r = s.query(Token).filter(Token.platform == platform, Token.account_id == account_id).first()
         if not r:
             raise HTTPException(status_code=404, detail='Not connected')
-        return {'platform': r.platform,'account_id': r.account_id,'username': r.username,'business_id': r.business_id,
-                'page_id': r.page_id,'access_token': r.access_token,'page_access_token': r.page_access_token,
-                'refresh_token': r.refresh_token}
+        return {
+            'platform': r.platform,'account_id': r.account_id,'username': r.username,'business_id': r.business_id,
+            'page_id': r.page_id,'access_token': r.access_token,'page_access_token': r.page_access_token,
+            'refresh_token': r.refresh_token, 'expires_at': r.expires_at.isoformat() if r.expires_at else None
+        }
 
 @app.post('/publish')
 async def publish(request: Request):
@@ -86,12 +89,25 @@ async def publish(request: Request):
 def health():
     return {'status':'ok','uptime': datetime.datetime.utcnow().isoformat()}
 
-# Import auth routers AFTER tables exist
 from auth import facebook, instagram, tiktok, youtube
 app.include_router(facebook.router)
 app.include_router(instagram.router)
 app.include_router(tiktok.router)
 app.include_router(youtube.router)
 
-from routes import settings as settings_routes
+from routes import settings as settings_routes, admin as admin_routes
 app.include_router(settings_routes.router)
+app.include_router(admin_routes.router)
+
+def _schedule_refresh():
+    from services.refresh import refresh_all
+    try:
+        res = refresh_all()
+        print("[Scheduler] Token refresh result:", res, flush=True)
+    except Exception as e:
+        print("[Scheduler] refresh error:", e, flush=True)
+
+if os.getenv("REFRESH_CRON_ENABLED", "0") == "1":
+    scheduler = BackgroundScheduler(timezone="UTC")
+    scheduler.add_job(_schedule_refresh, "interval", hours=12, id="token_refresh", replace_existing=True)
+    scheduler.start()
