@@ -1,0 +1,23 @@
+
+{% extends "layout.html" %}
+{% block content %}
+    <h2>🔗 Connect Your Accounts</h2>
+    <ul>
+        <li><a href="/auth/facebook">Connect Facebook</a></li>
+        <li><a href="/auth/instagram">Connect Instagram</a></li>
+        <li><a href="/auth/youtube">Connect YouTube</a></li>
+        <li><a href="/auth/tiktok">Connect TikTok</a></li>
+    </ul>
+
+    <hr>
+    <h2>🚀 Post to All Platforms</h2>
+    <form action="/dashboard/post" method="post" enctype="multipart/form-data">
+        <label>User ID:</label>
+        <input type="text" name="user_id" required><br><br>
+        <label>Message:</label>
+        <input type="text" name="message" required><br><br>
+        <label>Media:</label>
+        <input type="file" name="media"><br><br>
+        <button type="submit">Post</button>
+    </form>
+{% endblock %}

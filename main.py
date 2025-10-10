@@ -1,25 +1,18 @@
 
-import os
-import uvicorn
-from fastapi import FastAPI, Request, UploadFile, Form
-from auth import facebook
-from utils.media_handler import post_to_facebook
+from fastapi import FastAPI
+from routers import posts, users, auth
+from sqlmodel import SQLModel
+from models.user_settings import UserSettings
+from config import settings
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
 
-@app.get("/auth/facebook")
-async def login(request: Request):
-    return await facebook.facebook_login(request)
+@app.on_event("startup")
+def on_startup():
+    SQLModel.metadata.create_all(settings.engine)
 
-@app.get("/auth/facebook/callback")
-async def callback(request: Request):
-    token, user = await facebook.facebook_callback(request)
-    return {"token": token, "user": user}
-
-@app.post("/post/facebook")
-async def fb_post(token: str = Form(...), message: str = Form(...), media: UploadFile = None):
-    return await post_to_facebook(eval(token), message, media)
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8080))
-    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
+app.include_router(users.router, tags=["Dashboard"])
+app.include_router(posts.router, prefix="/posts", tags=["Posts"])
+app.include_router(auth.router, prefix="/auth", tags=["Auth"])

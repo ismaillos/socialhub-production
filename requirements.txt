@@ -1,7 +1,9 @@
 fastapi
 uvicorn[standard]
-aiohttp
 python-multipart
-authlib
-pydantic
+aiohttp
+sqlmodel
+cryptography
 python-dotenv
+authlib
+jinja2

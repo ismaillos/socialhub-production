@@ -1,1 +1,0 @@
-<!DOCTYPE html><html><head><meta charset='utf-8'><title>Accounts</title></head><body><h2>Connected Accounts</h2>{% for t in tokens %}<div><strong>{{ t.platform }}</strong> — {{ t.username or t.account_id }}{% if t.page_id %} (page: {{ t.page_id }}){% endif %}</div>{% else %}<p>No accounts yet.</p>{% endfor %}<p><a href='/'>← back</a></p></body></html>
