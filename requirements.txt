@@ -1,10 +1,7 @@
 fastapi
-uvicorn
-jinja2
-sqlalchemy
-requests
-gunicorn
-python-dotenv
+uvicorn[standard]
+aiohttp
 python-multipart
-cryptography
-apscheduler
+authlib
+pydantic
+python-dotenv
