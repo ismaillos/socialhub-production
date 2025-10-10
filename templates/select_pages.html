@@ -1,12 +1,1 @@
-<!DOCTYPE html>
-<html><head><meta charset="utf-8"/><title>Select Facebook Pages</title></head>
-<body>
-<h2>Select one or more Facebook Pages</h2>
-<form method="post" action="/auth/facebook/select-multi">
-  <input type="hidden" name="user_token" value="{{ user_token }}"/>
-  {% for p in pages %}
-    <label><input type="checkbox" name="page_ids" value="{{ p.id }}"/> {{ p.name }} ({{ p.id }})</label><br/>
-  {% endfor %}
-  <button type="submit">Connect selected</button>
-</form>
-</body></html>
+<!DOCTYPE html><html><head><meta charset='utf-8'/><title>Select Facebook Pages</title></head><body><h2>Select one or more Facebook Pages</h2><form method='post' action='/auth/facebook/select-multi'><input type='hidden' name='user_token' value='{{ user_token }}'/>{% for p in pages %}<label><input type='checkbox' name='page_ids' value='{{ p.id }}'/> {{ p.name }} ({{ p.id }})</label><br/>{% endfor %}<button type='submit'>Connect selected</button></form></body></html>

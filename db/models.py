@@ -9,8 +9,8 @@ class Token(Base):
     account_id = Column(String, index=True)
     username = Column(String, nullable=True)
     profile_pic = Column(String, nullable=True)
-    business_id = Column(String, nullable=True)
-    page_id = Column(String, nullable=True)
+    business_id = Column(String, nullable=True)  # IG business id
+    page_id = Column(String, nullable=True)      # FB page id
     page_access_token = Column(Text, nullable=True)
     access_token = Column(Text)
     refresh_token = Column(Text, nullable=True)
