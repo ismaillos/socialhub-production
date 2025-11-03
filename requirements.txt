@@ -1,9 +1,0 @@
-fastapi
-uvicorn[standard]
-python-multipart
-aiohttp
-sqlmodel
-cryptography
-python-dotenv
-authlib
-jinja2
