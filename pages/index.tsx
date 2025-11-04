@@ -189,7 +189,11 @@ export default function Home() {
             </div>
             <div className="border border-slate-200 rounded-2xl p-3">
               <div className="text-[11px] text-slate-400 mb-1">
-                {lang === "fr" ? "Idée visuel" : lang === "ar" ? "فكرة التصور البصري" : "Visual idea"}
+                {lang === "fr"
+                  ? "Idée visuel"
+                  : lang === "ar"
+                  ? "فكرة التصور البصري"
+                  : "Visual idea"}
               </div>
               <p>
                 {lang === "fr"

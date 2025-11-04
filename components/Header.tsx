@@ -30,6 +30,16 @@ const Header = () => {
               ? "إنشاء محتوى"
               : "Create content"}
           </Link>
+          <Link
+            href="/templates"
+            className="text-slate-700 hover:text-vlPurple"
+          >
+            {lang === "fr"
+              ? "Templates"
+              : lang === "ar"
+              ? "القوالب الجاهزة"
+              : "Templates"}
+          </Link>
           <div className="inline-flex items-center gap-1 text-xs border px-2 py-1 rounded-full text-slate-600 bg-slate-50">
             <button
               type="button"

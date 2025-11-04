@@ -1,5 +1,6 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 import StepIndicator from "../components/StepIndicator";
 import ContentPreview from "../components/ContentPreview";
@@ -10,6 +11,8 @@ type GenLanguage = "FR" | "EN" | "AR";
 
 export default function CreatePage() {
   const { lang } = useLanguage();
+  const router = useRouter();
+
   const [contentType, setContentType] = useState<ContentType>("video");
   const [genLang, setGenLang] = useState<GenLanguage>("FR");
   const [theme, setTheme] = useState("marketing");
@@ -19,6 +22,22 @@ export default function CreatePage() {
   const [generatedText, setGeneratedText] = useState<string | undefined>();
   const [generatedHashtags, setGeneratedHashtags] = useState<string[] | undefined>();
   const [imagePrompt, setImagePrompt] = useState<string | undefined>();
+  const [imageUrl, setImageUrl] = useState<string | undefined>();
+
+  // Prefill from templates query
+  useEffect(() => {
+    if (!router.isReady) return;
+    const q = router.query;
+    if (q.idea && typeof q.idea === "string") {
+      setIdea(q.idea);
+    }
+    if (q.theme && typeof q.theme === "string") {
+      setTheme(q.theme);
+    }
+    if (q.tone && typeof q.tone === "string") {
+      setTone(q.tone);
+    }
+  }, [router.isReady, router.query]);
 
   const labels = {
     title:
@@ -84,7 +103,7 @@ export default function CreatePage() {
       : lang === "fr"
       ? "🚀 Générer mon contenu"
       : lang === "ar"
-      ? "🚀 أنشئ المحتوى الآن"
+      ? "🚀 أنشè المحتوى الآن"
       : "🚀 Generate my content",
     copyText:
       lang === "fr"
@@ -97,7 +116,13 @@ export default function CreatePage() {
         ? "# Copier les hashtags"
         : lang === "ar"
         ? "# نسخ الوسوم"
-        : "# Copy hashtags"
+        : "# Copy hashtags",
+    genImage:
+      lang === "fr"
+        ? "🎨 Générer l’image avec l’IA"
+        : lang === "ar"
+        ? "🎨 توليد صورة بالذكاء الاصطناعي"
+        : "🎨 Generate image with AI"
   };
 
   const handleGenerate = async () => {
@@ -106,6 +131,7 @@ export default function CreatePage() {
     setGeneratedText(undefined);
     setGeneratedHashtags(undefined);
     setImagePrompt(undefined);
+    setImageUrl(undefined);
 
     try {
       const res = await fetch("/api/generate", {
@@ -136,6 +162,36 @@ export default function CreatePage() {
           : lang === "ar"
           ? "حدث خطأ ما. يُرجى المحاولة مرة أخرى بعد قليل."
           : "An error occurred. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGenerateImage = async () => {
+    const prompt = imagePrompt || idea;
+    if (!prompt) return;
+
+    setLoading(true);
+    try {
+      const res = await fetch("/api/generate-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt })
+      });
+
+      if (!res.ok) throw new Error("Image API error");
+
+      const data = await res.json();
+      setImageUrl(data.imageUrl);
+    } catch (err) {
+      console.error(err);
+      alert(
+        lang === "fr"
+          ? "Impossible de générer l’image pour le moment."
+          : lang === "ar"
+          ? "تعذَّر توليد الصورة حالياً."
+          : "Could not generate image right now."
       );
     } finally {
       setLoading(false);
@@ -284,7 +340,7 @@ export default function CreatePage() {
                 <button
                   type="button"
                   key={value}
-                  onClick={() => setTheme(value)}
+                  onClick={() => setTheme(value as string)}
                   className={`px-3 py-1.5 rounded-full border ${
                     theme === value
                       ? "bg-slate-900 text-white border-slate-900"
@@ -332,7 +388,7 @@ export default function CreatePage() {
                 <button
                   type="button"
                   key={value}
-                  onClick={() => setTone(value)}
+                  onClick={() => setTone(value as string)}
                   className={`px-3 py-1.5 rounded-full border ${
                     tone === value
                       ? "bg-slate-900 text-white border-slate-900"
@@ -370,6 +426,14 @@ export default function CreatePage() {
             >
               {labels.generateBtn}
             </button>
+            <button
+              type="button"
+              onClick={handleGenerateImage}
+              disabled={loading || (!imagePrompt && !idea.trim())}
+              className="text-xs px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"
+            >
+              {labels.genImage}
+            </button>
             {generatedText && (
               <>
                 <button
@@ -397,6 +461,7 @@ export default function CreatePage() {
             text={generatedText}
             hashtags={generatedHashtags}
             imagePrompt={imagePrompt}
+            imageUrl={imageUrl}
           />
         </div>
       </div>
