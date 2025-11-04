@@ -20,7 +20,7 @@ const stepsBase = [
     id: 3,
     fr: "3. Télécharge & publie",
     en: "3. Download & publish",
-    ar: "٣. حمّل وانشر"
+    ar: "٣. حمِّل وانشر"
   }
 ];
 

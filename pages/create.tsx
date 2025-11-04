@@ -31,7 +31,7 @@ export default function CreatePage() {
       lang === "fr"
         ? "Plus tu es précis, meilleur sera le contenu généré."
         : lang === "ar"
-        ? "كلما كنت دقيقاً في الوصف، كان المحتوى المُنشأ أفضل."
+        ? "كلما كان وصفك دقيقاً، كان المحتوى المُنشأ أفضل."
         : "The more precise you are, the better the result.",
     typeLabel:
       lang === "fr"
@@ -67,13 +67,13 @@ export default function CreatePage() {
       lang === "fr"
         ? "Ex : Je veux une vidéo qui explique comment utiliser l’IA pour lancer un petit business local."
         : lang === "ar"
-        ? "مثال: أريد فيديو قصيراً يشرح كيف أستعمل الذكاء الاصطناعي لإطلاق مشروع محلي صغير."
+        ? "مثال: أريد فيديو قصيراً يشرح كيف يمكن استخدام الذكاء الاصطناعي لإطلاق مشروع محلي صغير."
         : "Ex: I want a short video that explains how to use AI to start a small local business.",
     rightsNote:
       lang === "fr"
         ? "Tu gardes 100% de tes droits sur le contenu généré."
         : lang === "ar"
-        ? "تحتفظ بنسبة ١٠٠٪ من حقوقك على المحتوى المُنشأ."
+        ? "تحتفظ بنسبة ١٠٠٪ من حقوقك على المحتوى الذي تم إنشاؤه."
         : "You keep 100% of the rights on the generated content.",
     generateBtn: loading
       ? lang === "fr"
@@ -96,7 +96,7 @@ export default function CreatePage() {
       lang === "fr"
         ? "# Copier les hashtags"
         : lang === "ar"
-        ? "# نسخ الهاشتاغات"
+        ? "# نسخ الوسوم"
         : "# Copy hashtags"
   };
 
@@ -134,7 +134,7 @@ export default function CreatePage() {
         lang === "fr"
           ? "Une erreur est survenue. Réessaie dans un instant."
           : lang === "ar"
-          ? "حدث خطأ ما. حاول مرة أخرى بعد لحظات."
+          ? "حدث خطأ ما. يُرجى المحاولة مرة أخرى بعد قليل."
           : "An error occurred. Please try again."
       );
     } finally {
@@ -200,7 +200,7 @@ export default function CreatePage() {
                 {lang === "fr"
                   ? "Post image + texte"
                   : lang === "ar"
-                  ? "منشور صورة + نص"
+                  ? "منشور صورة مع نص"
                   : "Image + text post"}
               </button>
             </div>
@@ -240,11 +240,46 @@ export default function CreatePage() {
             </label>
             <div className="flex flex-wrap gap-2 text-xs">
               {[
-                ["marketing", lang === "fr" ? "Marketing digital" : lang === "ar" ? "التسويق الرقمي" : "Digital marketing"],
-                ["business", lang === "fr" ? "Business / Freelance" : lang === "ar" ? "أعمال / عمل حر" : "Business / Freelance"],
-                ["education", lang === "fr" ? "Éducation" : lang === "ar" ? "التعليم" : "Education"],
-                ["social", lang === "fr" ? "Social / Impact" : lang === "ar" ? "اجتماعي / أثر" : "Social / Impact"],
-                ["autre", lang === "fr" ? "Autre" : lang === "ar" ? "موضوع آخر" : "Other"]
+                [
+                  "marketing",
+                  lang === "fr"
+                    ? "Marketing digital"
+                    : lang === "ar"
+                    ? "التسويق الرقمي"
+                    : "Digital marketing"
+                ],
+                [
+                  "business",
+                  lang === "fr"
+                    ? "Business / Freelance"
+                    : lang === "ar"
+                    ? "الأعمال / العمل الحر"
+                    : "Business / Freelance"
+                ],
+                [
+                  "education",
+                  lang === "fr"
+                    ? "Éducation"
+                    : lang === "ar"
+                    ? "التعليم"
+                    : "Education"
+                ],
+                [
+                  "social",
+                  lang === "fr"
+                    ? "Social / Impact"
+                    : lang === "ar"
+                    ? "اجتماعي / أثر"
+                    : "Social / Impact"
+                ],
+                [
+                  "autre",
+                  lang === "fr"
+                    ? "Autre"
+                    : lang === "ar"
+                    ? "موضوع آخر"
+                    : "Other"
+                ]
               ].map(([value, label]) => (
                 <button
                   type="button"
@@ -269,9 +304,30 @@ export default function CreatePage() {
             </label>
             <div className="flex flex-wrap gap-2 text-xs">
               {[
-                ["inspirant", lang === "fr" ? "Inspirant & motivant" : lang === "ar" ? "ملهم ومحفّز" : "Inspiring & motivational"],
-                ["serieux", lang === "fr" ? "Sérieux & pro" : lang === "ar" ? "جدي واحترافي" : "Serious & professional"],
-                ["fun", lang === "fr" ? "Fun & léger" : lang === "ar" ? "خفيف وممتع" : "Fun & light"]
+                [
+                  "inspirant",
+                  lang === "fr"
+                    ? "Inspirant & motivant"
+                    : lang === "ar"
+                    ? "ملهم ومحفِّز"
+                    : "Inspiring & motivational"
+                ],
+                [
+                  "serieux",
+                  lang === "fr"
+                    ? "Sérieux & pro"
+                    : lang === "ar"
+                    ? "جدي واحترافي"
+                    : "Serious & professional"
+                ],
+                [
+                  "fun",
+                  lang === "fr"
+                    ? "Fun & léger"
+                    : lang === "ar"
+                    ? "خفيف وممتع"
+                    : "Fun & light"
+                ]
               ].map(([value, label]) => (
                 <button
                   type="button"

@@ -33,7 +33,7 @@ const ContentPreview: React.FC<Props> = ({ loading, text, hashtags, imagePrompt 
           {lang === "fr"
             ? "Ton contenu apparaîtra ici après la génération. Décris ton idée à gauche et clique sur “Générer”."
             : lang === "ar"
-            ? "سيظهر المحتوى هنا بعد التوليد. صف فكرتك في الجانب الأيسر واضغط على «توليد»."
+            ? "سيظهر المحتوى هنا بعد التوليد. صف فكرتك في الجهة اليسرى واضغط على «توليد»."
             : "Your content will appear here after generation. Describe your idea on the left and click “Generate”."}
         </p>
       </div>
@@ -59,7 +59,7 @@ const ContentPreview: React.FC<Props> = ({ loading, text, hashtags, imagePrompt 
             {lang === "fr"
               ? "Idée de visuel"
               : lang === "ar"
-              ? "فكرة الصورة / الفيديو"
+              ? "فكرة الصورة أو الفيديو"
               : "Visual idea"}
           </h3>
           <p className="text-xs text-slate-700">
@@ -67,7 +67,7 @@ const ContentPreview: React.FC<Props> = ({ loading, text, hashtags, imagePrompt 
               (lang === "fr"
                 ? "Une image sera proposée en fonction du texte (créateur de contenu, smartphone, ambiance moderne, réseaux sociaux)."
                 : lang === "ar"
-                ? "سيتم اقتراح صورة حسب النص (صانع محتوى، هاتف ذكي، أجواء عصرية، شبكات اجتماعية)."
+                ? "سيُقترح تصور بصري بناءً على النص (صانع محتوى، هاتف ذكي، أجواء عصرية، شبكات اجتماعية)."
                 : "An image will be suggested based on the text (content creator, smartphone, modern vibes, social media).")}
           </p>
         </div>
