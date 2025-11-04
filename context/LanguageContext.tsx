@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
-export type UILang = "fr" | "en";
+export type UILang = "fr" | "en" | "ar";
 
 type LangContextType = {
   lang: UILang;

@@ -26,11 +26,12 @@ export default async function handler(
     return res.status(500).json({ error: "Missing OPENAI_API_KEY env var" });
   }
 
-  const langLabel =
-    language === "EN" ? "English" : "French";
+  let langLabel = "French";
+  if (language === "EN") langLabel = "English";
+  if (language === "AR") langLabel = "Modern Standard Arabic";
 
   const systemPrompt = `
-You are Viralloby, a top-tier AI content creator for viral social media posts.
+You are Viralobby Studio, a top-tier AI content creator specialized in AI-powered digital marketing content.
 
 Language: ${langLabel}
 Content type: ${contentType} (short video or image+text post)
@@ -83,10 +84,10 @@ Return ONLY a JSON object with:
     const text = parsed.text || "No text generated.";
     const imagePrompt =
       parsed.imagePrompt ||
-      "Young Moroccan content creator with a smartphone, dynamic background, social media vibes.";
+      "Digital marketing scene, analytics dashboard, creator working on laptop, clean modern style.";
     const hashtags = Array.isArray(parsed.hashtags)
       ? parsed.hashtags
-      : ["viralloby", "ai", "contentcreator", "morocco"];
+      : ["viralobby", "ai", "digitalmarketing", "contentcreator"];
 
     return res.status(200).json({
       text,

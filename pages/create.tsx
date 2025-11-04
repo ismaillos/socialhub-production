@@ -6,13 +6,13 @@ import ContentPreview from "../components/ContentPreview";
 import { useLanguage } from "../context/LanguageContext";
 
 type ContentType = "video" | "post";
-type GenLanguage = "FR" | "EN";
+type GenLanguage = "FR" | "EN" | "AR";
 
 export default function CreatePage() {
   const { lang } = useLanguage();
   const [contentType, setContentType] = useState<ContentType>("video");
   const [genLang, setGenLang] = useState<GenLanguage>("FR");
-  const [theme, setTheme] = useState("emploi");
+  const [theme, setTheme] = useState("marketing");
   const [tone, setTone] = useState("inspirant");
   const [idea, setIdea] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,34 +21,83 @@ export default function CreatePage() {
   const [imagePrompt, setImagePrompt] = useState<string | undefined>();
 
   const labels = {
-    title: lang === "fr" ? "Décris ton idée" : "Describe your idea",
+    title:
+      lang === "fr"
+        ? "Décris ton idée"
+        : lang === "ar"
+        ? "صف فكرتك"
+        : "Describe your idea",
     subtitle:
       lang === "fr"
         ? "Plus tu es précis, meilleur sera le contenu généré."
+        : lang === "ar"
+        ? "كلما كنت دقيقاً في الوصف، كان المحتوى المُنشأ أفضل."
         : "The more precise you are, the better the result.",
-    typeLabel: lang === "fr" ? "Type de contenu" : "Content type",
-    langLabel: lang === "fr" ? "Langue du contenu" : "Content language",
-    themeLabel: lang === "fr" ? "Thème" : "Theme",
-    toneLabel: lang === "fr" ? "Ton du contenu" : "Tone",
+    typeLabel:
+      lang === "fr"
+        ? "Type de contenu"
+        : lang === "ar"
+        ? "نوع المحتوى"
+        : "Content type",
+    langLabel:
+      lang === "fr"
+        ? "Langue du contenu"
+        : lang === "ar"
+        ? "لغة المحتوى"
+        : "Content language",
+    themeLabel:
+      lang === "fr"
+        ? "Thème"
+        : lang === "ar"
+        ? "الموضوع"
+        : "Theme",
+    toneLabel:
+      lang === "fr"
+        ? "Ton du contenu"
+        : lang === "ar"
+        ? "أسلوب المحتوى"
+        : "Tone",
     ideaLabel:
-      lang === "fr" ? "Décris ton idée en une phrase" : "Describe your idea in one sentence",
+      lang === "fr"
+        ? "Décris ton idée en une phrase"
+        : lang === "ar"
+        ? "صف فكرتك في جملة واحدة"
+        : "Describe your idea in one sentence",
     ideaPlaceholder:
       lang === "fr"
-        ? "Ex : Je veux une vidéo qui motive les jeunes marocains à apprendre le digital pour trouver un job."
-        : "Ex: I want a video that motivates young Moroccans to learn digital skills to find a job.",
+        ? "Ex : Je veux une vidéo qui explique comment utiliser l’IA pour lancer un petit business local."
+        : lang === "ar"
+        ? "مثال: أريد فيديو قصيراً يشرح كيف أستعمل الذكاء الاصطناعي لإطلاق مشروع محلي صغير."
+        : "Ex: I want a short video that explains how to use AI to start a small local business.",
     rightsNote:
       lang === "fr"
         ? "Tu gardes 100% de tes droits sur le contenu généré."
+        : lang === "ar"
+        ? "تحتفظ بنسبة ١٠٠٪ من حقوقك على المحتوى المُنشأ."
         : "You keep 100% of the rights on the generated content.",
     generateBtn: loading
       ? lang === "fr"
         ? "Génération en cours..."
+        : lang === "ar"
+        ? "جاري توليد المحتوى..."
         : "Generating..."
       : lang === "fr"
       ? "🚀 Générer mon contenu"
+      : lang === "ar"
+      ? "🚀 أنشئ المحتوى الآن"
       : "🚀 Generate my content",
-    copyText: lang === "fr" ? "📋 Copier le texte" : "📋 Copy text",
-    copyTags: lang === "fr" ? "# Copier les hashtags" : "# Copy hashtags"
+    copyText:
+      lang === "fr"
+        ? "📋 Copier le texte"
+        : lang === "ar"
+        ? "📋 نسخ النص"
+        : "📋 Copy text",
+    copyTags:
+      lang === "fr"
+        ? "# Copier les hashtags"
+        : lang === "ar"
+        ? "# نسخ الهاشتاغات"
+        : "# Copy hashtags"
   };
 
   const handleGenerate = async () => {
@@ -84,6 +133,8 @@ export default function CreatePage() {
       alert(
         lang === "fr"
           ? "Une erreur est survenue. Réessaie dans un instant."
+          : lang === "ar"
+          ? "حدث خطأ ما. حاول مرة أخرى بعد لحظات."
           : "An error occurred. Please try again."
       );
     } finally {
@@ -129,7 +180,12 @@ export default function CreatePage() {
                     : "bg-white text-slate-700 border-slate-300"
                 }`}
               >
-                🎬 {lang === "fr" ? "Vidéo courte" : "Short video"}
+                🎬{" "}
+                {lang === "fr"
+                  ? "Vidéo courte"
+                  : lang === "ar"
+                  ? "فيديو قصير"
+                  : "Short video"}
               </button>
               <button
                 type="button"
@@ -140,7 +196,12 @@ export default function CreatePage() {
                     : "bg-white text-slate-700 border-slate-300"
                 }`}
               >
-                🖼️ {lang === "fr" ? "Post image + texte" : "Image + text post"}
+                🖼️{" "}
+                {lang === "fr"
+                  ? "Post image + texte"
+                  : lang === "ar"
+                  ? "منشور صورة + نص"
+                  : "Image + text post"}
               </button>
             </div>
           </div>
@@ -151,7 +212,7 @@ export default function CreatePage() {
               {labels.langLabel}
             </label>
             <div className="inline-flex gap-2 text-xs">
-              {(["FR", "EN"] as GenLanguage[]).map((l) => (
+              {(["FR", "EN", "AR"] as GenLanguage[]).map((l) => (
                 <button
                   key={l}
                   type="button"
@@ -162,7 +223,11 @@ export default function CreatePage() {
                       : "bg-white text-slate-700 border-slate-300"
                   }`}
                 >
-                  {l === "FR" ? "Français" : "English"}
+                  {l === "FR"
+                    ? "Français"
+                    : l === "EN"
+                    ? "English"
+                    : "العربية"}
                 </button>
               ))}
             </div>
@@ -175,12 +240,11 @@ export default function CreatePage() {
             </label>
             <div className="flex flex-wrap gap-2 text-xs">
               {[
-                ["emploi", lang === "fr" ? "Emploi / Travail" : "Jobs / Work"],
-                ["business", "Business / Freelance"],
-                ["motivation", lang === "fr" ? "Motivation" : "Motivation"],
-                ["education", lang === "fr" ? "Éducation" : "Education"],
-                ["social", lang === "fr" ? "Social / Impact" : "Social / Impact"],
-                ["autre", lang === "fr" ? "Autre" : "Other"]
+                ["marketing", lang === "fr" ? "Marketing digital" : lang === "ar" ? "التسويق الرقمي" : "Digital marketing"],
+                ["business", lang === "fr" ? "Business / Freelance" : lang === "ar" ? "أعمال / عمل حر" : "Business / Freelance"],
+                ["education", lang === "fr" ? "Éducation" : lang === "ar" ? "التعليم" : "Education"],
+                ["social", lang === "fr" ? "Social / Impact" : lang === "ar" ? "اجتماعي / أثر" : "Social / Impact"],
+                ["autre", lang === "fr" ? "Autre" : lang === "ar" ? "موضوع آخر" : "Other"]
               ].map(([value, label]) => (
                 <button
                   type="button"
@@ -205,9 +269,9 @@ export default function CreatePage() {
             </label>
             <div className="flex flex-wrap gap-2 text-xs">
               {[
-                ["inspirant", lang === "fr" ? "Inspirant & motivant" : "Inspiring & motivational"],
-                ["serieux", lang === "fr" ? "Sérieux & pro" : "Serious & professional"],
-                ["fun", lang === "fr" ? "Fun & léger" : "Fun & light"]
+                ["inspirant", lang === "fr" ? "Inspirant & motivant" : lang === "ar" ? "ملهم ومحفّز" : "Inspiring & motivational"],
+                ["serieux", lang === "fr" ? "Sérieux & pro" : lang === "ar" ? "جدي واحترافي" : "Serious & professional"],
+                ["fun", lang === "fr" ? "Fun & léger" : lang === "ar" ? "خفيف وممتع" : "Fun & light"]
               ].map(([value, label]) => (
                 <button
                   type="button"

@@ -3,10 +3,25 @@ type Props = {
   current: 1 | 2 | 3;
 };
 
-const steps = [
-  { id: 1, labelFr: "1. Décris ton idée", labelEn: "1. Describe your idea" },
-  { id: 2, labelFr: "2. Génération IA", labelEn: "2. AI generation" },
-  { id: 3, labelFr: "3. Télécharge & publie", labelEn: "3. Download & publish" }
+const stepsBase = [
+  {
+    id: 1,
+    fr: "1. Décris ton idée",
+    en: "1. Describe your idea",
+    ar: "١. صف فكرتك"
+  },
+  {
+    id: 2,
+    fr: "2. Génération IA",
+    en: "2. AI generation",
+    ar: "٢. توليد المحتوى بالذكاء الاصطناعي"
+  },
+  {
+    id: 3,
+    fr: "3. Télécharge & publie",
+    en: "3. Download & publish",
+    ar: "٣. حمّل وانشر"
+  }
 ];
 
 import { useLanguage } from "../context/LanguageContext";
@@ -16,10 +31,10 @@ const StepIndicator: React.FC<Props> = ({ current }) => {
 
   return (
     <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm mb-6">
-      {steps.map((step) => {
+      {stepsBase.map((step) => {
         const active = step.id === current;
         const done = step.id < current;
-        const label = lang === "fr" ? step.labelFr : step.labelEn;
+        const label = lang === "fr" ? step.fr : lang === "ar" ? step.ar : step.en;
         return (
           <div className="flex items-center gap-2" key={step.id}>
             <div

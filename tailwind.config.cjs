@@ -8,8 +8,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        vlPurple: "#5B21FF",
-        vlPink: "#EC4899"
+        vlPurple: "#1D4ED8",
+        vlPink: "#10B981"
       }
     }
   },

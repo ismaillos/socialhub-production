@@ -15,7 +15,13 @@ const ContentPreview: React.FC<Props> = ({ loading, text, hashtags, imagePrompt 
     return (
       <div className="h-full flex flex-col items-center justify-center text-sm text-slate-500">
         <div className="w-10 h-10 border-4 border-vlPurple/40 border-t-vlPurple rounded-full animate-spin mb-3" />
-        <p>{lang === "fr" ? "L’IA travaille pour toi…" : "AI is working for you..."}</p>
+        <p>
+          {lang === "fr"
+            ? "L’IA travaille pour toi…"
+            : lang === "ar"
+            ? "الذكاء الاصطناعي يعمل من أجلك…"
+            : "AI is working for you..."}
+        </p>
       </div>
     );
   }
@@ -26,6 +32,8 @@ const ContentPreview: React.FC<Props> = ({ loading, text, hashtags, imagePrompt 
         <p>
           {lang === "fr"
             ? "Ton contenu apparaîtra ici après la génération. Décris ton idée à gauche et clique sur “Générer”."
+            : lang === "ar"
+            ? "سيظهر المحتوى هنا بعد التوليد. صف فكرتك في الجانب الأيسر واضغط على «توليد»."
             : "Your content will appear here after generation. Describe your idea on the left and click “Generate”."}
         </p>
       </div>
@@ -36,7 +44,11 @@ const ContentPreview: React.FC<Props> = ({ loading, text, hashtags, imagePrompt 
     <div className="space-y-4 h-full flex flex-col">
       <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex-1">
         <h3 className="text-sm font-semibold text-slate-800 mb-1">
-          {lang === "fr" ? "Texte du post" : "Post text"}
+          {lang === "fr"
+            ? "Texte du post"
+            : lang === "ar"
+            ? "نص المنشور"
+            : "Post text"}
         </h3>
         <p className="text-sm whitespace-pre-wrap text-slate-800">{text}</p>
       </div>
@@ -44,12 +56,18 @@ const ContentPreview: React.FC<Props> = ({ loading, text, hashtags, imagePrompt 
       <div className="grid md:grid-cols-2 gap-4">
         <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
           <h3 className="text-sm font-semibold text-slate-800 mb-1">
-            {lang === "fr" ? "Idée de visuel" : "Visual idea"}
+            {lang === "fr"
+              ? "Idée de visuel"
+              : lang === "ar"
+              ? "فكرة الصورة / الفيديو"
+              : "Visual idea"}
           </h3>
           <p className="text-xs text-slate-700">
             {imagePrompt ||
               (lang === "fr"
                 ? "Une image sera proposée en fonction du texte (créateur de contenu, smartphone, ambiance moderne, réseaux sociaux)."
+                : lang === "ar"
+                ? "سيتم اقتراح صورة حسب النص (صانع محتوى، هاتف ذكي، أجواء عصرية، شبكات اجتماعية)."
                 : "An image will be suggested based on the text (content creator, smartphone, modern vibes, social media).")}
           </p>
         </div>
@@ -60,7 +78,7 @@ const ContentPreview: React.FC<Props> = ({ loading, text, hashtags, imagePrompt 
           <p className="text-xs text-slate-700">
             {hashtags && hashtags.length
               ? hashtags.map((h) => `#${h}`).join("  ")
-              : "#viralloby  #ai  #contentcreator  #morocco"}
+              : "#viralobby  #ai  #contentcreator  #digitalmarketing  #morocco"}
           </p>
         </div>
       </div>
