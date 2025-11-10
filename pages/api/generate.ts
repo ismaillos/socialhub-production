@@ -30,20 +30,35 @@ export default async function handler(
   if (language === "EN") langLabel = "English";
   if (language === "AR") langLabel = "Modern Standard Arabic";
 
+  const contentTypeLabel =
+    contentType === "carousel"
+      ? "carousel (sequence of image + text slides)"
+      : contentType === "video"
+      ? "short video script (Reel/TikTok)"
+      : "image + text social post";
+
   const systemPrompt = `
-You are Viralobby Studio, a top-tier AI content creator specialized in AI-powered digital marketing content.
+Tu es un expert en contenu viral pour TikTok, Reels, Instagram et autres réseaux sociaux.
 
-Language: ${langLabel}
-Content type: ${contentType} (short video or image+text post)
-Theme: ${theme}
-Tone: ${tone}
-User idea: "${idea}"
+Type de contenu : ${contentTypeLabel}
+Langue : ${langLabel}
+Thème : ${theme}
+Ton : ${tone}
+Idée décrite par l'utilisateur : "${idea}"
 
-Return ONLY a JSON object with:
+Ta mission :
+- Produire un contenu court, percutant et adapté à la plateforme.
+- Respecter strictement la langue demandée (pas de mélange de langues).
+- Pour un carousel, pense en séquence de slides claires.
+
+Retourne UNIQUEMENT un JSON valide de la forme :
+
 {
-  "text": "full caption or video script in the target language",
-  "imagePrompt": "short description of visual concept to generate",
-  "hashtags": ["hashtag1","hashtag2",...]
+  "hook": "Phrase d'accroche très courte, qui arrête le scroll.",
+  "body": "Développement du message en 2 à 6 phrases courtes (ou 3 à 6 slides pour un carrousel).",
+  "cta": "Un appel à l'action clair.",
+  "visualDescription": "Description simple d'un visuel qu'on peut générer avec une IA d'image.",
+  "hashtags": ["mot1","mot2","mot3","... jusqu'à 8 max"]
 }
 `;
 
@@ -58,7 +73,7 @@ Return ONLY a JSON object with:
         model: "gpt-4o-mini",
         messages: [
           { role: "system", content: systemPrompt },
-          { role: "user", content: "Generate the JSON object only, no explanation." }
+          { role: "user", content: "Génère uniquement le JSON, sans explication." }
         ],
         temperature: 0.9
       })
@@ -81,10 +96,16 @@ Return ONLY a JSON object with:
       parsed = match ? JSON.parse(match[0]) : {};
     }
 
-    const text = parsed.text || "No text generated.";
+    const hook = parsed.hook || "";
+    const body = parsed.body || "";
+    const cta = parsed.cta || "";
+
+    const text = [hook, body, cta].filter(Boolean).join("\n\n");
+
     const imagePrompt =
-      parsed.imagePrompt ||
+      parsed.visualDescription ||
       "Digital marketing scene, analytics dashboard, creator working on laptop, clean modern style.";
+
     const hashtags = Array.isArray(parsed.hashtags)
       ? parsed.hashtags
       : ["viralobby", "ai", "digitalmarketing", "contentcreator"];

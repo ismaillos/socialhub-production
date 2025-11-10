@@ -1,39 +1,54 @@
 
-# Viralobby Studio
+# Viralobby Studio (v2)
 
-Viralobby Studio is a small Next.js app that helps creators, freelancers and brands generate viral-style content using AI.
+Viralobby Studio est une application Next.js qui permet de générer du contenu viral en FR / EN / AR avec l’IA.
 
-- Multilingual UI: **FR / EN / AR (Modern Standard Arabic)**
-- AI text generation (OpenAI Chat Completions API)
-- AI image generation (OpenAI Images API with `gpt-image-1`)
-- Viral templates page to start from proven content patterns
+Fonctionnalités :
+- Types de contenu : Vidéo courte (Reel/TikTok), Post image + texte, Carrousel
+- Génération IA structurée (hook + body + CTA + description de visuel + hashtags)
+- Génération d’image avec l’API d’images OpenAI (`gpt-image-1`)
+- Interface trilingue : Français, Anglais, Arabe standard moderne
+- Page Templates pour démarrer avec des modèles prêts à l’emploi
 
-## Tech stack
+## Stack
 
 - Next.js 14
 - React 18
 - Tailwind CSS
 - TypeScript
+- API OpenAI (Chat + Images)
 
-## Getting started
+## Installation
 
 ```bash
 npm install
 cp .env.example .env.local
-# edit .env.local and set:
+# puis édite .env.local et configure :
 # OPENAI_API_KEY=sk-...
 
 npm run dev
 ```
 
-Then open http://localhost:3000
+Application disponible sur : http://localhost:3000
 
-## Deployment
+## Backend IA : comment ça fonctionne ?
 
-The app is optimized for Vercel.
+- Le frontend appelle l’API interne Next.js `/api/generate`.
+- Cette route construit un prompt structuré avec :
+  - type de contenu (vidéo / post / carrousel)
+  - langue (FR / EN / AR)
+  - thème
+  - ton
+  - idée utilisateur
+- Elle appelle l’API OpenAI **Chat Completions** (modèle `gpt-4o-mini`) et demande un JSON strict :
+  - `hook`, `body`, `cta`, `visualDescription`, `hashtags[]`
+- Le backend recombine `hook + body + cta` en un `text` final qui est envoyé au frontend, avec :
+  - une proposition de visuel (`imagePrompt`)
+  - une liste de hashtags
 
-1. Push the code to GitHub (or upload directly in Vercel).
-2. In Vercel Project Settings → Environment Variables:
-   - `OPENAI_API_KEY` = your key
-3. Deploy.
-4. Optionally, attach a custom domain like `studio.viralobby.com`.
+Pour l’image :
+- Le frontend appelle `/api/generate-image` avec le `imagePrompt`.
+- Cette route appelle l’API OpenAI **Images** (`gpt-image-1`) et renvoie une URL d’image.
+- Le frontend affiche l’image et propose de la télécharger.
+
+Tu peux déployer ce projet sur Vercel ou dans n’importe quel environnement Node.js.

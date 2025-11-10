@@ -6,7 +6,7 @@ import StepIndicator from "../components/StepIndicator";
 import ContentPreview from "../components/ContentPreview";
 import { useLanguage } from "../context/LanguageContext";
 
-type ContentType = "video" | "post";
+type ContentType = "video" | "post" | "carousel";
 type GenLanguage = "FR" | "EN" | "AR";
 
 export default function CreatePage() {
@@ -24,7 +24,6 @@ export default function CreatePage() {
   const [imagePrompt, setImagePrompt] = useState<string | undefined>();
   const [imageUrl, setImageUrl] = useState<string | undefined>();
 
-  // Prefill from templates query
   useEffect(() => {
     if (!router.isReady) return;
     const q = router.query;
@@ -103,7 +102,7 @@ export default function CreatePage() {
       : lang === "fr"
       ? "🚀 Générer mon contenu"
       : lang === "ar"
-      ? "🚀 أنشè المحتوى الآن"
+      ? "🚀 أنشئ المحتوى الآن"
       : "🚀 Generate my content",
     copyText:
       lang === "fr"
@@ -238,11 +237,12 @@ export default function CreatePage() {
               >
                 🎬{" "}
                 {lang === "fr"
-                  ? "Vidéo courte"
+                  ? "Vidéo courte (Reel/TikTok)"
                   : lang === "ar"
-                  ? "فيديو قصير"
-                  : "Short video"}
+                  ? "فيديو قصير (ريل / تيك توك)"
+                  : "Short video (Reel/TikTok)"}
               </button>
+
               <button
                 type="button"
                 onClick={() => setContentType("post")}
@@ -258,6 +258,23 @@ export default function CreatePage() {
                   : lang === "ar"
                   ? "منشور صورة مع نص"
                   : "Image + text post"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setContentType("carousel")}
+                className={`px-3 py-1.5 rounded-full text-xs border ${
+                  contentType === "carousel"
+                    ? "bg-vlPurple text-white border-vlPurple"
+                    : "bg-white text-slate-700 border-slate-300"
+                }`}
+              >
+                📜{" "}
+                {lang === "fr"
+                  ? "Carrousel (séquence d’images + texte)"
+                  : lang === "ar"
+                  ? "كاروسيل (تسلسل صور مع نص)"
+                  : "Carousel (sequence of images + text)"}
               </button>
             </div>
           </div>
@@ -417,41 +434,130 @@ export default function CreatePage() {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-3 items-center">
-            <button
-              type="button"
-              onClick={handleGenerate}
-              disabled={loading || !idea.trim()}
-              className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-vlPurple text-white text-sm font-medium shadow hover:bg-vlPurple/90 disabled:shadow-none"
-            >
-              {labels.generateBtn}
-            </button>
-            <button
-              type="button"
-              onClick={handleGenerateImage}
-              disabled={loading || (!imagePrompt && !idea.trim())}
-              className="text-xs px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"
-            >
-              {labels.genImage}
-            </button>
-            {generatedText && (
-              <>
-                <button
-                  type="button"
-                  onClick={handleCopyText}
-                  className="text-xs px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"
-                >
-                  {labels.copyText}
-                </button>
-                <button
-                  type="button"
-                  onClick={handleCopyHashtags}
-                  className="text-xs px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"
-                >
-                  {labels.copyTags}
-                </button>
-              </>
-            )}
+          {/* Barre d’actions */}
+          <div className="flex flex-col gap-3 mt-3">
+            <div className="flex flex-wrap gap-3 items-center">
+              {/* Générer */}
+              <button
+                type="button"
+                onClick={handleGenerate}
+                disabled={loading || !idea.trim()}
+                className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-vlPurple text-white text-sm font-medium shadow hover:bg-vlPurple/90 disabled:shadow-none"
+              >
+                {labels.generateBtn}
+              </button>
+
+              {/* Générer l'image avec IA */}
+              <button
+                type="button"
+                onClick={handleGenerateImage}
+                disabled={loading || (!imagePrompt && !idea.trim())}
+                className="text-xs px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"
+              >
+                {labels.genImage}
+              </button>
+
+              {/* Générer une variante */}
+              <button
+                type="button"
+                onClick={handleGenerate}
+                disabled={loading || !generatedText}
+                className="text-xs px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"
+              >
+                🟢{" "}
+                {lang === "fr"
+                  ? "Générer une variante"
+                  : lang === "ar"
+                  ? "توليد نسخة أخرى"
+                  : "Generate a variant"}
+              </button>
+
+              {/* Modifier mon idée */}
+              <button
+                type="button"
+                onClick={() => {
+                  const textarea = document.querySelector("textarea");
+                  if (textarea instanceof HTMLTextAreaElement) {
+                    textarea.scrollIntoView({ behavior: "smooth", block: "center" });
+                    textarea.focus();
+                  }
+                }}
+                className="text-xs px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"
+              >
+                ✏️{" "}
+                {lang === "fr"
+                  ? "Modifier mon idée"
+                  : lang === "ar"
+                  ? "تعديل الفكرة"
+                  : "Edit my idea"}
+              </button>
+            </div>
+
+            <div className="flex flex-wrap gap-3 items-center text-xs">
+              {/* Copier texte */}
+              <button
+                type="button"
+                onClick={handleCopyText}
+                disabled={!generatedText}
+                className="px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"
+              >
+                {labels.copyText}
+              </button>
+
+              {/* Copier hashtags */}
+              <button
+                type="button"
+                onClick={handleCopyHashtags}
+                disabled={!generatedHashtags}
+                className="px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"
+              >
+                {labels.copyTags}
+              </button>
+
+              {/* Sauvegarder (placeholder) */}
+              <button
+                type="button"
+                onClick={() =>
+                  alert(
+                    lang === "fr"
+                      ? "Plus tard : sauvegarde de contenu dans ton compte."
+                      : lang === "ar"
+                      ? "لاحقاً: حفظ المحتوى في حسابك."
+                      : "Coming soon: save content to your account."
+                  )
+                }
+                className="px-3 py-2 rounded-xl border border-dashed border-slate-300 bg-white hover:bg-slate-50"
+              >
+                💾{" "}
+                {lang === "fr"
+                  ? "Sauvegarder ce contenu"
+                  : lang === "ar"
+                  ? "حفظ هذا المحتوى"
+                  : "Save this content"}
+              </button>
+
+              {/* Mini tuto publication */}
+              <button
+                type="button"
+                onClick={() =>
+                  alert(
+                    lang === "fr"
+                      ? "Plus tard : mini tuto pour poster sur Instagram / TikTok."
+                      : lang === "ar"
+                      ? "لاحقاً: شرح مبسط لكيفية النشر على إنستغرام / تيك توك."
+                      : "Coming soon: mini tutorial for posting on Instagram / TikTok."
+                  )
+                }
+                className="px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50"
+              >
+                📲{" "}
+                {lang === "fr"
+                  ? "Comment le poster ?"
+                  : lang === "ar"
+                  ? "كيف أنشر هذا المحتوى؟"
+                  : "How to post it?"}
+              </button>
+            </div>
           </div>
         </div>
 
