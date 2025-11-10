@@ -8,6 +8,7 @@ type Props = {
 };
 
 import { useLanguage } from "../context/LanguageContext";
+import SocialPreview from "./SocialPreview";
 
 const ContentPreview: React.FC<Props> = ({
   loading,
@@ -132,6 +133,9 @@ const ContentPreview: React.FC<Props> = ({
           </p>
         </div>
       </div>
+
+      {/* Social previews for platforms */}
+      <SocialPreview text={text} hashtags={hashtags} />
     </div>
   );
 };
