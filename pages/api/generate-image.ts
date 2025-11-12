@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   try {
     const response = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      headers: { Authorization: `Bearer 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`, "Content-Type": "application/json" },
       body: JSON.stringify({ model: "gpt-image-1", prompt, n: 1, size: "1024x1024" })
     });
 

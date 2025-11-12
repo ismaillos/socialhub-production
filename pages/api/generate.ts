@@ -34,7 +34,7 @@ Return ONLY strict JSON:
   try{
     const completion = await fetch("https://api.openai.com/v1/chat/completions",{
       method:"POST",
-      headers:{ Authorization:`Bearer ${apiKey}`, "Content-Type":"application/json" },
+      headers:{ Authorization:`Bearer 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`, "Content-Type":"application/json" },
       body: JSON.stringify({
         model: "gpt-4o-mini",
         messages: [
