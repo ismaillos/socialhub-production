@@ -1,7 +1,8 @@
 
 import type { AppProps } from "next/app";
 import "../styles/globals.css";
-import { LanguageProvider } from "../context/LanguageContext";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 export default function MyApp({ Component, pageProps }: AppProps){
-  return (<LanguageProvider><Component {...pageProps} /></LanguageProvider>);
+  return (<><Header /><main className="container py-8"><Component {...pageProps} /></main><Footer /></>);
 }
