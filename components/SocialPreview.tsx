@@ -24,7 +24,7 @@ export default function SocialPreview({ text, hashtags, contentType }:{ text?:st
             <div className="text-[11px] text-slate-600 font-medium">{p.label} · {p.ratio}</div>
             <div className="relative w-full rounded-2xl bg-slate-900 text-white overflow-hidden">
               <div style={{paddingTop:getPadding(p.ratio)}} />
-              <div className="absolute inset-0 p-2 flex flex-col justify-between text-[10px]">
+              <div className="absolute inset-0 p-2 flex flex-col justify-between text:[10px]">
                 <div className="bg-black/50 rounded-lg px-2 py-1"><div className="font-semibold truncate">{firstLine}</div></div>
                 <div className="bg-black/40 rounded-lg px-2 py-1 mt-1"><div className="truncate">{tagsLine}</div></div>
               </div>

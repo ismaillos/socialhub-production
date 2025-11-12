@@ -6,11 +6,15 @@ module.exports = {
     extend: {
       colors: {
         vl_primary: "#6C4CF7",
-        vl_accent: "#00D1B2"
+        vl_accent: "#00D1B2",
+        vl_ink: "#0F172A"
       },
       backgroundImage: {
         "hero-gradient":
-          "radial-gradient(1200px 600px at 10% -10%, rgba(108,76,247,0.25), transparent), radial-gradient(1200px 600px at 110% 10%, rgba(0,209,178,0.25), transparent)"
+          "radial-gradient(1200px 600px at 10% -10%, rgba(108,76,247,0.18), transparent), radial-gradient(1200px 600px at 110% 10%, rgba(0,209,178,0.18), transparent)"
+      },
+      boxShadow: {
+        soft: "0 20px 50px -20px rgba(15,23,42,0.25)"
       }
     }
   },
