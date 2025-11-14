@@ -22,7 +22,7 @@ export default function DashboardPage() {
             {[
               {
                 title: "Viral Reels / Shorts",
-                desc: "Generate hooks, scripts and prompts for Veo2/3.",
+                desc: "Hooks, scripts and Veo prompts.",
                 href: "/create"
               },
               {
@@ -32,12 +32,12 @@ export default function DashboardPage() {
               },
               {
                 title: "Image Posts",
-                desc: "Idea + caption + AI visual in one go.",
+                desc: "Caption + AI visual idea.",
                 href: "/create"
               },
               {
-                title: "Blog / Long-form",
-                desc: "Turn ideas into SEO-ready articles.",
+                title: "Long-form",
+                desc: "Turn ideas into full articles.",
                 href: "/create"
               }
             ].map((card) => (
@@ -57,70 +57,6 @@ export default function DashboardPage() {
                 </span>
               </Link>
             ))}
-          </section>
-
-          <section className="card-light p-4">
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-slate-50">Recent Drafts</h2>
-              <button className="text-xs text-slate-400 hover:text-slate-200">View All</button>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full text-xs">
-                <thead>
-                  <tr className="text-slate-500 border-b border-slate-800">
-                    <th className="text-left py-2 pr-4 font-medium">Title</th>
-                    <th className="text-left py-2 pr-4 font-medium">Type</th>
-                    <th className="text-left py-2 pr-4 font-medium">Platform</th>
-                    <th className="text-left py-2 pr-4 font-medium">Last edited</th>
-                    <th className="text-left py-2 font-medium">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800">
-                  {[
-                    {
-                      title: "AI for small businesses",
-                      type: "Reel Script",
-                      platform: "Instagram / TikTok",
-                      edited: "2 hours ago",
-                      status: "Draft"
-                    },
-                    {
-                      title: "5 mistakes in digital marketing",
-                      type: "Carousel",
-                      platform: "Instagram",
-                      edited: "Yesterday",
-                      status: "Ready"
-                    },
-                    {
-                      title: "Weekly LinkedIn story",
-                      type: "Image Post",
-                      platform: "LinkedIn",
-                      edited: "3 days ago",
-                      status: "Draft"
-                    },
-                    {
-                      title: "Full guide: Content system",
-                      type: "Blog",
-                      platform: "Website",
-                      edited: "5 days ago",
-                      status: "In Review"
-                    }
-                  ].map((row) => (
-                    <tr key={row.title} className="text-slate-300">
-                      <td className="py-2 pr-4">{row.title}</td>
-                      <td className="py-2 pr-4">{row.type}</td>
-                      <td className="py-2 pr-4">{row.platform}</td>
-                      <td className="py-2 pr-4">{row.edited}</td>
-                      <td className="py-2">
-                        <span className="badge-pill bg-slate-900 text-slate-300 border border-slate-700">
-                          {row.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
           </section>
         </div>
       </div>

@@ -1,45 +1,28 @@
 
-# Viralobby Studio – Full App (B version)
+# Viralobby Studio v7 (MVP)
 
-- Next.js 14 + React 18 + Tailwind CSS
-- Beautiful dark UI inspired by your screenshots
-- Working content generator connected to OpenAI:
-  - `/api/generate` → text + hashtags + imagePrompt + Veo2/3 videoPrompt
-  - `/api/generate-image` → AI image (1024x1024)
-- Screens:
-  - `/dashboard` (also `/`) – overview
-  - `/create` – main studio (Reel / Image / Carousel)
-  - `/review` – sample review view
-  - `/library` – templates & assets
-  - `/analytics` – placeholder
+This is a minimal, clean Next.js 14 + Tailwind app with:
 
-## Setup
+- Layout (Sidebar + Topbar)
+- `/dashboard` and `/create` pages
+- `/api/generate` wired to OpenAI (JSON output)
+- `@/` path alias configured via `jsconfig.json`
 
-1. Install dependencies:
+## Local setup
 
 ```bash
 npm install
-```
-
-2. Set your OpenAI API key:
-
-```bash
-export OPENAI_API_KEY=sk-xxx   # macOS / Linux
-setx OPENAI_API_KEY "sk-xxx"   # Windows PowerShell (then restart)
-```
-
-3. Dev:
-
-```bash
+export OPENAI_API_KEY=sk-xxxx   # macOS / Linux
+# or setx OPENAI_API_KEY "sk-xxxx" on Windows, then restart terminal
 npm run dev
 ```
 
-→ Open http://localhost:3000/create
+Open: http://localhost:3000/create
 
-4. Deploy (Vercel / cPanel Node):
+## Deploy (Vercel / cPanel Node)
 
 - Add env var `OPENAI_API_KEY`
-- Run:
+- Build & start:
 
 ```bash
 npm install

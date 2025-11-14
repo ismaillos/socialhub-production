@@ -16,7 +16,6 @@ body {
   @apply min-h-screen flex bg-slate-950;
 }
 
-/* Sidebar */
 .sidebar {
   @apply w-64 shrink-0 bg-slate-950 text-slate-100 flex flex-col border-r border-slate-800;
 }
@@ -37,7 +36,6 @@ body {
   @apply bg-slate-900 text-slate-50;
 }
 
-/* Main */
 .main-area {
   @apply flex-1 flex flex-col;
 }
@@ -50,7 +48,6 @@ body {
   @apply flex-1 overflow-y-auto;
 }
 
-/* UI */
 .badge-pill {
   @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium;
 }
@@ -65,10 +62,6 @@ body {
 
 .btn-ghost {
   @apply btn border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-100;
-}
-
-.btn-soft {
-  @apply btn bg-slate-900 text-slate-200 hover:bg-slate-800;
 }
 
 .input {
