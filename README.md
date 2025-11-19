@@ -1,19 +1,31 @@
 
-# Viralobby Studio v6 — Vercel-ready env
+# Viralobby Studio v7 (MVP)
 
-## Setup (local)
+This is a minimal, clean Next.js 14 + Tailwind app with:
+
+- Layout (Sidebar + Topbar)
+- `/dashboard` and `/create` pages
+- `/api/generate` wired to OpenAI (JSON output)
+- `@/` path alias configured via `jsconfig.json`
+
+## Local setup
+
 ```bash
 npm install
-cp .env.example .env.local
-# put your OpenAI key:
-# OPENAI_API_KEY=sk-...
+export OPENAI_API_KEY=sk-xxxx   # macOS / Linux
+# or setx OPENAI_API_KEY "sk-xxxx" on Windows, then restart terminal
 npm run dev
 ```
 
-## Deploy on Vercel
-1. Settings → Environment Variables
-2. Add `OPENAI_API_KEY` with your real key
-3. Enable for Development, Preview, Production
-4. Redeploy
+Open: http://localhost:3000/create
 
-APIs use: `process.env.OPENAI_API_KEY` → sent as `Authorization: Bearer ${apiKey}`.
+## Deploy (Vercel / cPanel Node)
+
+- Add env var `OPENAI_API_KEY`
+- Build & start:
+
+```bash
+npm install
+npm run build
+npm start
+```

@@ -1,20 +1,23 @@
 
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./pages/**/*.{js,jsx}",
+    "./components/**/*.{js,jsx}"
+  ],
   theme: {
     extend: {
       colors: {
-        vl_primary: "#6C4CF7",
-        vl_accent: "#00D1B2",
-        vl_ink: "#0F172A"
-      },
-      backgroundImage: {
-        "hero-gradient":
-          "radial-gradient(1200px 600px at 10% -10%, rgba(108,76,247,0.18), transparent), radial-gradient(1200px 600px at 110% 10%, rgba(0,209,178,0.18), transparent)"
+        vl_primary: "#7C3AED",
+        vl_accent: "#22C55E",
+        vl_dark_bg: "#020617",
+        vl_dark_panel: "#020617",
+        vl_dark_border: "rgba(148,163,184,0.25)"
       },
       boxShadow: {
-        soft: "0 20px 50px -20px rgba(15,23,42,0.25)"
+        soft: "0 24px 80px -40px rgba(15,23,42,0.9)"
+      },
+      borderRadius: {
+        "2xl": "1.25rem"
       }
     }
   },
