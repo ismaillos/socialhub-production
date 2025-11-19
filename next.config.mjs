@@ -1,5 +1,6 @@
 
 const nextConfig = {
-  reactStrictMode: true
+  reactStrictMode: true,
+  images: { domains: ["oaidalleapiprodscus.blob.core.windows.net"] }
 };
 export default nextConfig;
