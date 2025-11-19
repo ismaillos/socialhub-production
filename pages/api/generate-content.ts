@@ -33,13 +33,12 @@ export default async function handler(
   }
 
   const userPrompt = `
-You are an expert AI copywriter for online content.
-
-Generate a ${contentType || "blog post"} in English with:
-- Clear hook/title
-- Short intro
-- Main body (2–4 short paragraphs or bullet points)
-- Short outro / call-to-action
+You are an expert AI copywriter for ${contentType || "social content"}.
+Generate content in English with:
+- A clear, catchy title
+- A short intro paragraph
+- A main body (2–4 short paragraphs or bullet points)
+- A short outro with a call to action
 - Up to 8 relevant hashtags (without # symbol)
 
 Context:
@@ -49,12 +48,11 @@ Context:
 - Tone of voice: ${tone || "Professional"}
 
 Return ONLY valid JSON with this shape:
-
 {
   "title": "short title",
   "intro": "one short intro paragraph",
-  "body": "main content, can contain line breaks",
-  "outro": "short closing paragraph with CTA",
+  "body": "main content",
+  "outro": "short closing paragraph",
   "hashtags": ["tag1","tag2","tag3"]
 }
 `.trim();
